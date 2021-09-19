@@ -30,7 +30,8 @@ public class Hostage : Ball
 
         direction += Vector3.Cross(Vector3.up, rb.velocity).normalized * Random.Range(-1f, 1f);
 
-        Roll(direction.normalized);
+        direction = direction.normalized;
+        Roll(direction);
     }
 
     IEnumerator RandomMove()
