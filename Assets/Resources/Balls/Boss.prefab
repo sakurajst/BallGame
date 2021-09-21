@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5463567056992208136
+--- !u!1 &6078192601146903355
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,70 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5463567056992208130}
-  - component: {fileID: 5463567056992208133}
-  - component: {fileID: 5463567056992208132}
-  - component: {fileID: 5463567056992208135}
-  - component: {fileID: 5463567056992208134}
-  - component: {fileID: 5463567056992208137}
+  - component: {fileID: 6078192601146903298}
+  - component: {fileID: 6078192601146903297}
+  - component: {fileID: 6078192601146903359}
+  - component: {fileID: 6078192601146903357}
+  - component: {fileID: 6078192601146903356}
+  - component: {fileID: 4627053198194048438}
   m_Layer: 0
-  m_Name: SmallBlackBall
-  m_TagString: SmallBlackBall
+  m_Name: Boss
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5463567056992208130
+--- !u!4 &6078192601146903298
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
+  m_GameObject: {fileID: 6078192601146903355}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.7, y: 0.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 3.04, y: 1.5, z: -10.32}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5463567056992208133
+--- !u!33 &6078192601146903297
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
+  m_GameObject: {fileID: 6078192601146903355}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &5463567056992208132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c955a0439bbfcd64b97e0da461aee6cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 5463567056992208137}
-  friction: 0.02
-  f: 0
-  maxSpeed: 3
-  speed: 2
-  vecs: []
-  reboundForce: 1
-  fast: 0
-  sqrDis: 36
-  direction: {x: 0, y: 0, z: 0}
---- !u!23 &5463567056992208135
+--- !u!23 &6078192601146903359
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
+  m_GameObject: {fileID: 6078192601146903355}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -104,26 +82,26 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &5463567056992208134
+--- !u!135 &6078192601146903357
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
+  m_GameObject: {fileID: 6078192601146903355}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &5463567056992208137
+--- !u!54 &6078192601146903356
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5463567056992208136}
+  m_GameObject: {fileID: 6078192601146903355}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -133,3 +111,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4627053198194048438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6078192601146903355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3124e6afd2f76b042aa4d09e336c2119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  friction: 0
+  f: 0
+  maxSpeed: 0
+  speed: 1
+  vecs: []
+  reboundForce: 0.3
+  playerBall: {fileID: 5396367864037584189, guid: 73661c41e0da0914887f2e90dd803618,
+    type: 3}
+  direction: {x: 0, y: 0, z: 0}
+  bossHP: 3
+  count: 0
+  dropGap: 0
+  preTime: 0
+  dropRange: 0
+  sqrShadowRange: 0
+  jumpTimeGap: 30

@@ -6,6 +6,14 @@ using UnityEngine.SocialPlatforms;
 
 public class Enemy : Ball
 {
+    GameManager gm;
+    private bool hasCollided = true;
+    private static Stack<GameObject> enemyPool = new Stack<GameObject>();
+    public static List<Enemy> blackBalls = new List<Enemy>();
+    private static int BlackMaxNum = 20;
+    public bool fast = false;
+    GameObject boss;
+
     GameObject playerBall;
     RaycastHit hit;
     [SerializeField] int sqrDis = 36;
@@ -18,6 +26,13 @@ public class Enemy : Ball
         rb = transform.GetComponent<Rigidbody>();
 
         StartCoroutine(RandomMove());
+
+        boss = GameObject.Find("RedBalls").GetComponent<RedBallsManager>().boss;
+    }
+
+    public static void ClearPool()
+    {
+        enemyPool.Clear();
     }
 
     void Update()
@@ -27,24 +42,38 @@ public class Enemy : Ball
 
         direction += Vector3.Cross(Vector3.up, rb.velocity).normalized * Random.Range(-1f, 1f);
 
-        int index = FindRedBall();
-        if (index >= 0)
+   
+
+        if (boss != null && boss.activeSelf && (boss.transform.position - transform.position).sqrMagnitude < 25)
         {
+            direction += (boss.transform.position - transform.position).normalized * 2;
+        }
+
+        if (fast)
+        {
+            direction += (playerBall.transform.position - transform.position).normalized * 2;
+        }
+        else
+        {
+            int index = FindRedBall();
+            if (index >= 0)
+            {
                 if ((Friend.redBalls[index].transform.position - transform.position).sqrMagnitude < (playerBall.transform.position - transform.position).sqrMagnitude)
                     direction = (Friend.redBalls[index].transform.position - transform.position).normalized;
                 else
                     direction = (playerBall.transform.position - transform.position).normalized;
                 StopCoroutine(RandomMove());
                 openCorouitine = false;
-        }
-        else
-        {
+            }
+            else
+            {
                 if (!openCorouitine)
                 {
                     StartCoroutine(RandomMove());
                     openCorouitine = true;
                 }
 
+            }
         }
 
         direction = direction.normalized;
@@ -85,6 +114,158 @@ public class Enemy : Ball
             }
 
             yield return 0;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        hasCollided = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if (hasCollided) return;
+
+        //if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<Player>().state == 2)
+        //{
+        //    //小黑球与中主角：小黑球变灰，速度加快
+        //    //EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Grey"));
+        //    this.enabled = false;
+        //    Invoke("Black2Grey", 1);
+
+
+        //    hasCollided = true;
+        //}
+        //else if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<Player>().state == 3)
+        //{
+        //    //小黑球与大主角：小黑球变红，速度加快
+        //   // EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Red"));
+        //    this.enabled = false;
+        //    Invoke("Black2Red", 1);
+
+
+        //    hasCollided = true;
+        //}
+
+        if (collision.gameObject.CompareTag( "Boss") || collision.gameObject.CompareTag("SmallBlackBall") || collision.gameObject.CompareTag("RedBall") || collision.gameObject.CompareTag("GreyBall") || collision.gameObject.CompareTag("Player"))
+        {
+            Rebound(collision);
+            hasCollided = true;
+        }
+
+        if (collision.gameObject.layer == 10)
+        {
+            CollideWall(collision);
+            //Debug.Log("撞墙");
+            hasCollided = true;
+        }
+    }
+
+    void Black2Grey()
+    {
+        DestroySelf();
+        Hostage.GenerateSelf(transform.position);
+    }
+
+    void Black2Red()
+    {
+        DestroySelf();
+        Friend.GenerateSelf(transform.position);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("AirWall"))
+        {
+            DestroySelf();
+            float rangeMin = 20f;
+            float rangeMax = 25f;// gm.rangeMax;
+            RaycastHit hit;
+            Vector3 pos = other.transform.position;
+
+            Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * Random.Range(rangeMin, rangeMax);
+            pos += dir.normalized * 20;
+            if (Physics.Raycast(pos, dir, out hit, 50, 1 << 10))
+            {
+                // Debug.LogFormat("空气墙后重生：射线射中,位置{0}", hit.point - dir.normalized * 0.5f);
+                GenerateSelf(hit.point - dir.normalized * 0.5f);
+            }
+            else
+            {
+                //  Debug.LogFormat("空气墙后重生：射线没有射中,位置{0}", (pos + dir));
+                GenerateSelf(pos + dir);
+            }
+        }
+
+        else if (other.gameObject.CompareTag("Boss"))
+        {
+            //Debug.Log("黑球减速");
+            fast = false;
+            maxSpeed = 3;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Boss"))
+        {
+            fast = true;
+            maxSpeed = 6;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("RedColorRange"))
+        {
+            Debug.Log("结束时小球全变红");
+        }
+    }
+
+    public void DestroySelf()
+    {
+        rb.velocity = Vector3.zero;
+        //Debug.Log("销毁黑球");
+        //gm.SetBallNum("black", false);
+
+        enemyPool.Push(gameObject);
+        gameObject.SetActive(false);
+        blackBalls.Remove(this);
+    }
+
+    public static void GenerateSelf(Vector3 pos)
+    {
+        if (BlackMaxNum <= blackBalls.Count)
+            return;
+        //Debug.Log("生成黑球");
+        //GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("black", true);
+        GameObject go;
+        if (enemyPool.Count > 0)
+        {
+            go = enemyPool.Pop();
+        }
+        else
+        {
+            go = Instantiate<GameObject>((GameObject)Resources.Load("Balls/SmallBlackBall"));
+        }
+        go.transform.parent = GameObject.Find("BlackBalls").transform;
+        go.transform.position = pos;
+        go.GetComponent<Enemy>().enabled = true;
+        go.GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Black");
+        blackBalls.Add(go.GetComponent<Enemy>());
+        go.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        // rb.velocity = Vector3.zero;
+        GetComponent<Enemy>().enabled = true;
+        GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Black");
+
+        if (GetComponent<MeshRenderer>().materials[0].name != "C_Black (Instance)")
+        {
+            //Debug.LogErrorFormat("黑球材质错误！，当前材质是{0}", GetComponent<MeshRenderer>().materials[0].name);
         }
     }
 
