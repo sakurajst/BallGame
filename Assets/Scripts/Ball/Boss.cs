@@ -28,8 +28,8 @@ public class Boss : Ball
         sumHP = bossHP;
         rb = transform.GetComponent<Rigidbody>();
 
-        sqrShadowRange = transform.GetChild(0).transform.localScale.x * transform.GetChild(0).transform.localScale.x;
-        transform.GetComponent<SphereCollider>().radius = transform.GetChild(0).transform.localScale.x * 0.5f;
+        //sqrShadowRange = transform.GetChild(0).transform.localScale.x * transform.GetChild(0).transform.localScale.x;
+        //transform.GetComponent<SphereCollider>().radius = transform.GetChild(0).transform.localScale.x * 0.5f;
 
         StartCoroutine(FindPlayer());
 
@@ -54,7 +54,7 @@ public class Boss : Ball
         {
             yield return new WaitForSeconds(jumpTimeGap);
 
-            transform.GetChild(0).gameObject.SetActive(false);
+            //transform.GetChild(0).gameObject.SetActive(false);
             Vector3 dir = new Vector3((playerBall.transform.position - transform.position).x, 0, (playerBall.transform.position - transform.position).z).normalized;
             for (int i = 0; i < count; i++)
             {
@@ -67,7 +67,7 @@ public class Boss : Ball
             yield return new WaitForSeconds(0.5f);
             rb.velocity += dir * 15;
             yield return new WaitForSeconds(1f);
-            transform.GetChild(0).gameObject.SetActive(true);
+            //transform.GetChild(0).gameObject.SetActive(true);
 
         }
 
