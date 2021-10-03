@@ -6,7 +6,6 @@ public class RedBallsManager : MonoBehaviour
 {
     [SerializeField] GameObject playerBall;
     [SerializeField] float sphereCastMaxDis = 1;
-    [SerializeField] float setTimeGap = 1;
     [SerializeField] float factor5555;
     public GameObject boss;
     public Material redMat;
@@ -37,10 +36,7 @@ public class RedBallsManager : MonoBehaviour
 
     void Start()
     {
-
-        //set = true;
         StartCoroutine(Set());
-
     }
 
     IEnumerator Set()
@@ -48,7 +44,7 @@ public class RedBallsManager : MonoBehaviour
         while (true)
         {
             SetFactor();
-            yield return new WaitForSeconds(setTimeGap);
+            yield return new WaitForSeconds(数值调节类._集群权重更新周期);
         }
     }
 

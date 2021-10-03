@@ -16,17 +16,22 @@ public class Friend : Ball
 
     void Start()
     {
-        playerBall = GameObject.Find("PlayerBall");
+        friction = 数值调节类._红球摩檫力;
+        maxSpeed = 数值调节类._红球最大速度;
+        speed = 数值调节类._红球速度;
+        reboundForce = 数值调节类._红球反弹力;
+
+        playerBall = GameObject.FindGameObjectWithTag("Player");
         rb = transform.GetComponent<Rigidbody>();
         gm = GameObject.Find("Manager").GetComponent<GameManager>();
     }
 
     private void OnEnable()
     {
-        playerBall = GameObject.Find("PlayerBall");
+        playerBall = GameObject.FindGameObjectWithTag("Player");
 
         GetComponent<Friend>().enabled = true;
-        //GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Red");
+        GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Red");
 
         //if (GetComponent<MeshRenderer>().materials[0].name != "C_Red (Instance)")
         //{
@@ -34,7 +39,7 @@ public class Friend : Ball
         //}
     }
 
-    public static void ClaerPool()
+    public static void ClearPool()
     {
         friendPool.Clear();
     }
@@ -133,7 +138,7 @@ public class Friend : Ball
     {
         rb.velocity = Vector3.zero;
         //Debug.Log("销毁红球");
-       // gm.SetBallNum("red", false);
+        gm.SetBallNum("red", false);
 
         friendPool.Push(gameObject);
         gameObject.SetActive(false);
@@ -144,7 +149,7 @@ public class Friend : Ball
     public void ChangeSelf()
     {
         rb.velocity = Vector3.zero;
-       // gm.SetBallNum("red", false);
+        gm.SetBallNum("red", false);
         friendPool.Push(gameObject);
         gameObject.SetActive(false);
 
@@ -154,7 +159,7 @@ public class Friend : Ball
     public static void GenerateSelf(Vector3 pos)
     {
         //Debug.Log("生成红球");
-        //GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("red", true);
+        GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("red", true);
 
         GameObject go;
         if (friendPool.Count > 0)

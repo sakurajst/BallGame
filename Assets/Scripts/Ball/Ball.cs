@@ -11,23 +11,16 @@ public class Ball : MonoBehaviour
     public float friction, f, maxSpeed;
     public float speed = 1;
     public List<Vector3> vecs;
-    [SerializeField] float reboundForce = 0.3f;
+    protected float reboundForce = 0.3f;
 
     void Start()
     {
         rb = transform.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetPath(List<Vector3> path)
     {
         vecs = path;
-        Debug.Log(vecs.Count);
     }
 
     public void Roll(Vector3 direction)
@@ -63,7 +56,7 @@ public class Ball : MonoBehaviour
         Vector3 vself = rb.velocity, vother = co.collider.GetComponent<Rigidbody>().velocity, normal = co.contacts[0].normal;
         rb.velocity += normal * reboundForce * Vector3.Project(vother, normal).magnitude;
 
-        if (co.gameObject.tag == "Boss" && gameObject.name == "PlayerBall")
+        if (co.gameObject.CompareTag( "Boss") && gameObject.CompareTag("Player"))
         {
             rb.velocity += normal * reboundForce * Vector3.Project(vother, normal).magnitude * 10;
         }

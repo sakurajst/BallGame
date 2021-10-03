@@ -16,18 +16,23 @@ public class Enemy : Ball
 
     GameObject playerBall;
     RaycastHit hit;
-    [SerializeField] int sqrDis = 36;
+    float sqrDis = 数值调节类._黑球找红球视野平方;
     [SerializeField] Vector3 direction;
     bool openCorouitine = false;
 
     void Start()
     {
-        playerBall = GameObject.Find("PlayerBall");
+        friction = 数值调节类._黑球摩檫力;
+        maxSpeed = 数值调节类._黑球最大速度;
+        speed = 数值调节类._黑球速度;
+        reboundForce = 数值调节类._黑球反弹力;
+
+        playerBall = GameObject.FindGameObjectWithTag("Player");
+        boss = GameObject.FindGameObjectWithTag("Boss");
         rb = transform.GetComponent<Rigidbody>();
+        gm = GameObject.Find("Manager").GetComponent<GameManager>();
 
         StartCoroutine(RandomMove());
-
-        boss = GameObject.Find("RedBalls").GetComponent<RedBallsManager>().boss;
     }
 
     public static void ClearPool()
@@ -127,26 +132,26 @@ public class Enemy : Ball
 
         if (hasCollided) return;
 
-        //if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<Player>().state == 2)
-        //{
-        //    //小黑球与中主角：小黑球变灰，速度加快
-        //    //EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Grey"));
-        //    this.enabled = false;
-        //    Invoke("Black2Grey", 1);
+        if (collision.gameObject.CompareTag( "Player" )&& collision.gameObject.GetComponent<Player>().state == 2)
+        {
+            //小黑球与中主角：小黑球变灰，速度加快
+            //EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Grey"));
+            this.enabled = false;
+            Invoke("Black2Grey", 1);
 
 
-        //    hasCollided = true;
-        //}
-        //else if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<Player>().state == 3)
-        //{
-        //    //小黑球与大主角：小黑球变红，速度加快
-        //   // EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Red"));
-        //    this.enabled = false;
-        //    Invoke("Black2Red", 1);
+            hasCollided = true;
+        }
+        else if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<Player>().state == 3)
+        {
+            //小黑球与大主角：小黑球变红，速度加快
+            // EffectManager.ChangeColor(gameObject, collision, Resources.Load<Material>("C_Red"));
+            this.enabled = false;
+            Invoke("Black2Red", 1);
 
 
-        //    hasCollided = true;
-        //}
+            hasCollided = true;
+        }
 
         if (collision.gameObject.CompareTag( "Boss") || collision.gameObject.CompareTag("SmallBlackBall") || collision.gameObject.CompareTag("RedBall") || collision.gameObject.CompareTag("GreyBall") || collision.gameObject.CompareTag("Player"))
         {
@@ -227,7 +232,7 @@ public class Enemy : Ball
     {
         rb.velocity = Vector3.zero;
         //Debug.Log("销毁黑球");
-        //gm.SetBallNum("black", false);
+        gm.SetBallNum("black", false);
 
         enemyPool.Push(gameObject);
         gameObject.SetActive(false);
@@ -239,7 +244,7 @@ public class Enemy : Ball
         if (BlackMaxNum <= blackBalls.Count)
             return;
         //Debug.Log("生成黑球");
-        //GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("black", true);
+        GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("black", true);
         GameObject go;
         if (enemyPool.Count > 0)
         {

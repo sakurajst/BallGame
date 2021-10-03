@@ -8,6 +8,9 @@ TagManager:
   - GreyBall
   - RedBall
   - Boss
+  - Wall
+  - AirWall
+  - RedColorRange
   layers:
   - Default
   - TransparentFX

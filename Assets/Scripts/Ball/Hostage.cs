@@ -24,6 +24,12 @@ public class Hostage : Ball
 
     void Start()
     {
+        friction = 数值调节类._灰球摩檫力;
+        maxSpeed = 数值调节类._灰球最大速度;
+        speed = 数值调节类._灰球速度;
+        reboundForce = 数值调节类._灰球反弹力;
+
+        gm = GameObject.Find("Manager").GetComponent<GameManager>();
         findPath = GameObject.Find("Manager").GetComponent<FindPath>();
         rb = transform.GetComponent<Rigidbody>();
         StartCoroutine(RandomMove());
@@ -40,7 +46,7 @@ public class Hostage : Ball
         Roll(direction);
     }
 
-    public static void ClaerPool()
+    public static void ClearPool()
     {
         hostagePool.Clear();
     }
@@ -109,8 +115,9 @@ public class Hostage : Ball
 
     void Grey2Red()
     {
-        DestroySelf();
         Friend.GenerateSelf(transform.position);
+        DestroySelf();
+        
     }
 
     private void OnTriggerExit(Collider other)
@@ -155,7 +162,7 @@ public class Hostage : Ball
         rb.velocity = Vector3.zero;
         // Debug.Log("销毁灰球");
         // 灰球数量减一
-        //gm.SetBallNum("grey", false);
+        gm.SetBallNum("grey", false);
 
         hostagePool.Push(gameObject);
         gameObject.SetActive(false);
@@ -169,7 +176,7 @@ public class Hostage : Ball
             return;
 
         //Debug.Log("生成灰球");
-        //GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("grey", true);
+        GameObject.Find("Manager").GetComponent<GameManager>().SetBallNum("grey", true);
         GameObject go;
         if (hostagePool.Count > 0)
         {
@@ -196,7 +203,7 @@ public class Hostage : Ball
     {
 
         GetComponent<Hostage>().enabled = true;
-       // GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Grey");
+        GetComponent<MeshRenderer>().materials[0] = Resources.Load<Material>("C_Grey");
 
 
         //if (GetComponent<MeshRenderer>().materials[0].name != "C_Grey (Instance)")
