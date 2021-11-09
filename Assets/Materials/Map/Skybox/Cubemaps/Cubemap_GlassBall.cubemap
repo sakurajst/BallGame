@@ -6,7 +6,7 @@ Cubemap:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cubemap_0
+  m_Name: Cubemap_GlassBall
   m_ImageContentsHash:
     serializedVersion: 2
     Hash: 3e0994056843a351103a682b2b06b31b
