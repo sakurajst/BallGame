@@ -34,11 +34,9 @@ public class GameManager : MonoBehaviour
         Friend.ClearPool();
         Hostage.ClearPool();
         Enemy.ClearPool();
-        //Time.timeScale = 0;
 
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         angle1 = 100;
@@ -119,10 +117,6 @@ public class GameManager : MonoBehaviour
         Enemy.GenerateSelf(pos);
     }
 
-    /// <summary>
-    /// 初始化：随机生成一批灰球和黑球
-    /// TODO:生成的位置随机性不够
-    /// </summary>
     private void InitializeBalls()
     {
         //生成一堆灰球黑球
@@ -220,11 +214,7 @@ public class GameManager : MonoBehaviour
                     blackNum++;
                     GenerateBoss();
                     player.state = 2;
-                    //inputManager.maxAngle = angle2;
-                    //切bgm
-                    //StartCoroutine(Music1TO2());
 
-                    //合体按钮的箭头
                     unionButtonArrow.SetActive(true);
 
                 }
@@ -248,15 +238,11 @@ public class GameManager : MonoBehaviour
                 // PostProcessing.SetSaturation(Mathf.Lerp(-15f,20f, per));
             }
         }
-        //调用uimanager函数改变比例条
-        //ui.ChangeUI(redNum, greyNum, blackNum, player.state);
+
 
     }
 
-    /// <summary>
-    /// 主角附近生成BOSS
-    /// TODO: 出生点会卡墙，或者在巷道上方
-    /// </summary>
+
     void GenerateBoss()
     {
         float rangeMin = 3;
@@ -297,9 +283,7 @@ public class GameManager : MonoBehaviour
     IEnumerator BeingUnion()
     {
         float sumTime = 数值调节类._基础合体时间 + Friend.redBalls.Count * 数值调节类._每红球加合体时间;
-        //EffectManager.AttachPower(player.transform, sumTime);
-        //UnityEngine.Debug.LogFormat("等待解除合体，unionTime={0},Friend.redBalls.Count = {1},结果{2}", unionTime, Friend.redBalls.Count, unionTime + Friend.redBalls.Count * unionTimet0);
-        // yield return new WaitForSeconds(unionTime + Friend.redBalls.Count * t0);    
+ 
 
 
         for (float t = Time.time; Time.time - t < sumTime;)
@@ -315,11 +299,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerWin()
     {
-        //UnityEngine.Debug.Log("玩家胜利！！！！");
 
-        //Time.timeScale = 0;
-        //holo.transform.position = player.transform.position;
-        //holo.SetActive(true);
         Invoke("winWindowAppear", 5);
     }
 
